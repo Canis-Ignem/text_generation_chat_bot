@@ -140,16 +140,15 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
 
 voc, pairs = dh.loadPrepareData(dh.corpus, dh.corpus_name, dh.datafile)
 
-# Configure models
 model_name = 'cb_model'
 attn_model = 'dot'
 #attn_model = 'general'
 #attn_model = 'concat'
-hidden_size = 512
-encoder_n_layers = 4
-decoder_n_layers = 4
-dropout = 0.2
-batch_size = 128
+hidden_size = 500
+encoder_n_layers = 2
+decoder_n_layers = 2
+dropout = 0.1
+batch_size = 64
 
 # Set checkpoint to load from; set to None if starting from scratch
 loadFilename = None
@@ -189,14 +188,15 @@ encoder = encoder.to(device)
 decoder = decoder.to(device)
 print('Models built and ready to go!')
 
-# Configure training/optimization
+
 clip = 50.0
 teacher_forcing_ratio = 1.0
 learning_rate = 0.0001
 decoder_learning_ratio = 5.0
-n_iteration = 10000
+n_iteration = 40000
 print_every = 1
 save_every = 500
+
 
 # Ensure dropout layers are in train mode
 encoder.train()
