@@ -124,9 +124,8 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
 
         # Save checkpoint
         if (iteration % save_every == 0):
-            directory = os.path.join(save_dir, model_name, corpus_name, '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size))
-            if not os.path.exists(directory):
-                os.makedirs(directory)
+            if not os.path.exists(save_dir):
+                os.makedirs(save_dir)
             torch.save({
                 'iteration': iteration,
                 'en': encoder.state_dict(),
@@ -136,7 +135,7 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
                 'loss': loss,
                 'voc_dict': voc.__dict__,
                 'embedding': embedding.state_dict()
-            }, os.path.join(directory, '{}_{}.tar'.format(iteration, 'checkpoint')))
+            }, os.path.join(save_dir, '{}_{}.tar'.format(iteration, 'checkpoint')))
 
 
 voc, pairs = dh.loadPrepareData(dh.corpus, dh.corpus_name, dh.datafile)

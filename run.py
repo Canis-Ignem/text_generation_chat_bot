@@ -13,7 +13,7 @@ device = torch.device("cuda" if USE_CUDA else "cpu")
 
 voc = vocab.Voc("Testing")
 
-checkpoint = torch.load("models/cb_model")
+checkpoint = torch.load("models/9500_checkpoint.tar")
 encoder = checkpoint['en']
 decoder = checkpoint['de']
 
