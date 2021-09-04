@@ -18,7 +18,7 @@ batch_size = 128
 
 
 USE_CUDA = torch.cuda.is_available()
-device = torch.device("cuda" if USE_CUDA else "cpu")
+device = torch.device("cpu" if USE_CUDA else "cpu")
 
 voc = vocab.Voc("Testing")
 
@@ -37,8 +37,10 @@ decoder = models.LuongAttnDecoderRNN(attn_model, embedding, hidden_size, voc.num
 
 encoder.load_state_dict(encoder_sd)
 decoder.load_state_dict(decoder_sd)
+
 encoder.eval()
 decoder.eval()
+
 encoder.to(device)
 decoder.to(device)
 
