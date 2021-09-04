@@ -18,18 +18,18 @@ voc, pairs = dh.loadPrepareData(dh.corpus, dh.corpus_name, dh.datafile)
 
 
 model_name = 'cb_model'
-attn_model = 'general'
-hidden_size = 500
+attn_model = 'dot'
+hidden_size = 1024
 encoder_n_layers = 4
 decoder_n_layers = 4
-dropout = 0.2
+dropout = 0.1
 batch_size = 128
 
 clip = 50.0
 teacher_forcing_ratio = 1.0
 learning_rate = 0.0001
 decoder_learning_ratio = 5.0
-n_iteration = 40001
+n_iteration = 400001
 print_every = 1
 save_every = 1000
 

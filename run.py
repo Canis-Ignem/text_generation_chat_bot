@@ -6,11 +6,11 @@ import vocab
 
 # CONFIG
 model_name = 'cb_model'
-attn_model = 'general'
-hidden_size = 500
+attn_model = 'dot'
+hidden_size = 1024
 encoder_n_layers = 4
 decoder_n_layers = 4
-dropout = 0.2
+dropout = 0.1
 batch_size = 128
 
 
