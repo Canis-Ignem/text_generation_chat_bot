@@ -182,7 +182,7 @@ def train(input_variable, lengths, target_variable, mask, max_target_len, encode
 
 def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer, encoder_scheduler,decoder_scheduler,
                 embedding, encoder_n_layers, decoder_n_layers, save_dir, n_iteration, batch_size, print_every, save_every,
-                clip, corpus_name, loadFilename):
+                clip, corpus_name, loadFilename, best_loss):
 
     # Load batches for each iteration
     training_batches = [dh.batch2TrainData(voc, [random.choice(pairs) for _ in range(batch_size)])
@@ -241,4 +241,4 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
 print("Starting Training!")
 trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer, encoder_scheduler, decoder_scheduler,
            embedding, encoder_n_layers, decoder_n_layers, dh.save_dir, n_iteration, batch_size,
-           print_every, save_every, clip, dh.corpus_name, loadFilename)
+           print_every, save_every, clip, dh.corpus_name, loadFilename, best_loss)
