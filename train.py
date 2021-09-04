@@ -23,7 +23,7 @@ hidden_size = 1024
 encoder_n_layers = 4
 decoder_n_layers = 4
 dropout = 0.1
-batch_size = 256
+batch_size = 128
 
 clip = 50.0
 teacher_forcing_ratio = 1.0

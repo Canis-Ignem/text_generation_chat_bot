@@ -14,7 +14,6 @@ dropout = 0.1
 batch_size = 128
 
 
-
 USE_CUDA = torch.cuda.is_available()
 device = torch.device("cpu" if USE_CUDA else "cpu")
 

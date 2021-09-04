@@ -6,7 +6,7 @@ import os
 import re
 
 
-MAX_LENGTH = 20
+MAX_LENGTH = 15
 MIN_COUNT = 2
 
 small_batch_size = 100
