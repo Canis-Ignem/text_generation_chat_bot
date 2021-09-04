@@ -4,7 +4,16 @@ import torch
 import models
 import vocab
 
-
+# Configure models
+model_name = 'cb_model'
+attn_model = 'dot'
+#attn_model = 'general'
+#attn_model = 'concat'
+hidden_size = 512
+encoder_n_layers = 4
+decoder_n_layers = 4
+dropout = 0.2
+batch_size = 128
 
 
 
@@ -14,29 +23,35 @@ device = torch.device("cuda" if USE_CUDA else "cpu")
 voc = vocab.Voc("Testing")
 
 checkpoint = torch.load("models/9500_checkpoint.tar")
-encoder = checkpoint['en']
-decoder = checkpoint['de']
+encoder_sd = checkpoint['en']
+decoder_sd = checkpoint['de']
+embedding_sd = checkpoint['embedding']
+voc.__dict__ = checkpoint['voc_dict']
 
+
+embedding = nn.Embedding(voc.num_words, hidden_size)
+embedding.load_state_dict(embedding_sd)
+
+encoder = models.EncoderRNN(hidden_size, embedding, encoder_n_layers, dropout)
+decoder = models.LuongAttnDecoderRNN(attn_model, embedding, hidden_size, voc.num_words, decoder_n_layers, dropout)
+
+encoder.load_state_dict(encoder_sd)
+decoder.load_state_dict(decoder_sd)
 encoder.eval()
 decoder.eval()
 
 
 
 def evaluate(encoder, decoder, searcher, voc, sentence, max_length=dh.MAX_LENGTH):
-    ### Format input sentence as a batch
-    # words -> indexes
+
     indexes_batch = [dh.indexesFromSentence(voc, sentence)]
-    # Create lengths tensor
     lengths = torch.tensor([len(indexes) for indexes in indexes_batch])
-    # Transpose dimensions of batch to match models' expectations
     input_batch = torch.LongTensor(indexes_batch).transpose(0, 1)
-    # Use appropriate device
     input_batch = input_batch.to(device)
     lengths = lengths.to("cpu")
-    # Decode sentence with searcher
     tokens, scores = searcher(input_batch, lengths, max_length)
-    # indexes -> words
     decoded_words = [voc.index2word[token.item()] for token in tokens]
+    
     return decoded_words
 
 
