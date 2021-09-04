@@ -23,19 +23,21 @@ hidden_size = 1024
 encoder_n_layers = 4
 decoder_n_layers = 4
 dropout = 0.1
-batch_size = 128
+batch_size = 256
 
 clip = 50.0
 teacher_forcing_ratio = 1.0
-learning_rate = 0.0001
+learning_rate = 0.00001
 decoder_learning_ratio = 5.0
-n_iteration = 400001
+n_iteration = 100001
 print_every = 1
 save_every = 1000
 
 
 loadFilename = None
 checkpoint_iter = 4000
+
+best_loss = float("inf")
 #loadFilename = os.path.join(save_dir, model_name, corpus_name,
 #                            '{}-{}_{}'.format(encoder_n_layers, decoder_n_layers, hidden_size),
 #                            '{}_checkpoint.tar'.format(checkpoint_iter))
@@ -212,23 +214,25 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
             print_loss = 0
 
         # Save checkpoint
-        if (iteration % save_every == 0):
+        if (iteration % save_every == 0) :
 
             encoder_scheduler.step()
             decoder_scheduler.step()
 
-            if not os.path.exists(save_dir):
-                os.makedirs(save_dir)
-            torch.save({
-                'iteration': iteration,
-                'en': encoder.state_dict(),
-                'de': decoder.state_dict(),
-                'en_opt': encoder_optimizer.state_dict(),
-                'de_opt': decoder_optimizer.state_dict(),
-                'loss': loss,
-                'voc_dict': voc.__dict__,
-                'embedding': embedding.state_dict()
-            }, os.path.join(save_dir, "Mr.Corpus.pth"))
+            if print_loss_avg < best_loss:
+                best_loss = print_loss_avg
+                if not os.path.exists(save_dir):
+                    os.makedirs(save_dir)
+                torch.save({
+                    'iteration': iteration,
+                    'en': encoder.state_dict(),
+                    'de': decoder.state_dict(),
+                    'en_opt': encoder_optimizer.state_dict(),
+                    'de_opt': decoder_optimizer.state_dict(),
+                    'loss': loss,
+                    'voc_dict': voc.__dict__,
+                    'embedding': embedding.state_dict()
+                }, os.path.join(save_dir, "Mr.Corpus.pth"))
 
 
 
