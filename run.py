@@ -4,16 +4,14 @@ import torch
 import models
 import vocab
 
-# Configure models
+# CONFIG
 model_name = 'cb_model'
-attn_model = 'dot'
-#attn_model = 'general'
-#attn_model = 'concat'
+attn_model = 'general'
 hidden_size = 500
-encoder_n_layers = 2
-decoder_n_layers = 2
-dropout = 0.1
-batch_size = 64
+encoder_n_layers = 4
+decoder_n_layers = 4
+dropout = 0.2
+batch_size = 128
 
 
 
@@ -21,8 +19,7 @@ USE_CUDA = torch.cuda.is_available()
 device = torch.device("cpu" if USE_CUDA else "cpu")
 
 voc = vocab.Voc("Testing")
-
-checkpoint = torch.load("models/19500_checkpoint.tar")
+checkpoint = torch.load("models/Mr.Corpus.pth")
 encoder_sd = checkpoint['en']
 decoder_sd = checkpoint['de']
 embedding_sd = checkpoint['embedding']
