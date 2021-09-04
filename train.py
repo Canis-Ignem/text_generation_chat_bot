@@ -91,7 +91,9 @@ def train(input_variable, lengths, target_variable, mask, max_target_len, encode
 
     return sum(print_losses) / n_totals
 
-def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer, embedding, encoder_n_layers, decoder_n_layers, save_dir, n_iteration, batch_size, print_every, save_every, clip, corpus_name, loadFilename):
+def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer, encoder_scheduler,decoder_scheduler,
+                embedding, encoder_n_layers, decoder_n_layers, save_dir, n_iteration, batch_size, print_every, save_every,
+                clip, corpus_name, loadFilename):
 
     # Load batches for each iteration
     training_batches = [dh.batch2TrainData(voc, [random.choice(pairs) for _ in range(batch_size)])
@@ -124,6 +126,10 @@ def trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, deco
 
         # Save checkpoint
         if (iteration % save_every == 0):
+
+            encoder_scheduler.step()
+            decoder_scheduler.step()
+
             if not os.path.exists(save_dir):
                 os.makedirs(save_dir)
             torch.save({
@@ -206,6 +212,11 @@ decoder.train()
 print('Building optimizers ...')
 encoder_optimizer = optim.Adam(encoder.parameters(), lr=learning_rate)
 decoder_optimizer = optim.Adam(decoder.parameters(), lr=learning_rate * decoder_learning_ratio)
+
+
+encoder_scheduler = torch.optim.lr_scheduler.StepLR(encoder_optimizer, save_every, gamma=0.8)
+decoder_scheduler = torch.optim.lr_scheduler.StepLR(decoder_optimizer, save_every, gamma=0.8)
+
 if loadFilename:
     encoder_optimizer.load_state_dict(encoder_optimizer_sd)
     decoder_optimizer.load_state_dict(decoder_optimizer_sd)
@@ -223,6 +234,6 @@ for state in decoder_optimizer.state.values():
 
 # Run training iterations
 print("Starting Training!")
-trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer,
+trainIters(model_name, voc, pairs, encoder, decoder, encoder_optimizer, decoder_optimizer, encoder_scheduler, decoder_scheduler,
            embedding, encoder_n_layers, decoder_n_layers, dh.save_dir, n_iteration, batch_size,
            print_every, save_every, clip, dh.corpus_name, loadFilename)
