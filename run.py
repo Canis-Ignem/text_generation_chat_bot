@@ -107,6 +107,7 @@ def evaluateInput(encoder, decoder, searcher, voc):
 
 # Initialize search module
 searcher = GreedySearchDecoder(encoder, decoder)
+searcher.to(device)
 
 # Begin chatting (uncomment and run the following line to begin)
 evaluateInput(encoder, decoder, searcher, voc)
