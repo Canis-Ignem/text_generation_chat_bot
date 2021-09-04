@@ -31,7 +31,7 @@ learning_rate = 0.00001
 decoder_learning_ratio = 5.0
 n_iteration = 100001
 print_every = 1
-save_every = 1000
+save_every = 100
 
 
 loadFilename = None
