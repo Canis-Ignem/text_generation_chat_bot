@@ -39,7 +39,8 @@ encoder.load_state_dict(encoder_sd)
 decoder.load_state_dict(decoder_sd)
 encoder.eval()
 decoder.eval()
-
+encoder.to(device)
+decoder.to(device)
 
 class GreedySearchDecoder(nn.Module):
     def __init__(self, encoder, decoder):
@@ -78,7 +79,7 @@ def evaluate(encoder, decoder, searcher, voc, sentence, max_length=dh.MAX_LENGTH
     lengths = torch.tensor([len(indexes) for indexes in indexes_batch])
     input_batch = torch.LongTensor(indexes_batch).transpose(0, 1)
     input_batch = input_batch.to(device)
-    lengths = lengths.to("cpu")
+    lengths = lengths.to(device)
     tokens, scores = searcher(input_batch, lengths, max_length)
     decoded_words = [voc.index2word[token.item()] for token in tokens]
 
