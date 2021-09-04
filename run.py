@@ -9,11 +9,11 @@ model_name = 'cb_model'
 attn_model = 'dot'
 #attn_model = 'general'
 #attn_model = 'concat'
-hidden_size = 512
-encoder_n_layers = 4
-decoder_n_layers = 4
-dropout = 0.2
-batch_size = 128
+hidden_size = 500
+encoder_n_layers = 2
+decoder_n_layers = 2
+dropout = 0.1
+batch_size = 64
 
 
 
