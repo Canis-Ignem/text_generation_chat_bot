@@ -22,7 +22,7 @@ device = torch.device("cpu" if USE_CUDA else "cpu")
 
 voc = vocab.Voc("Testing")
 
-checkpoint = torch.load("models/6000_checkpoint.tar")
+checkpoint = torch.load("models/19500_checkpoint.tar")
 encoder_sd = checkpoint['en']
 decoder_sd = checkpoint['de']
 embedding_sd = checkpoint['embedding']
