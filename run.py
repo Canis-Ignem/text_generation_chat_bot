@@ -3,6 +3,10 @@ from torch import nn
 import torch
 import models
 import vocab
+import argparse
+
+args = argparse.ArgumentParser()
+args.add_argument('--text', metavar='t', type=str, default='', help='input text', required=True)
 
 # CONFIG
 model_name = 'cb_model'
@@ -39,6 +43,7 @@ decoder.eval()
 
 encoder.to(device)
 decoder.to(device)
+
 
 class GreedySearchDecoder(nn.Module):
     def __init__(self, encoder, decoder):
@@ -99,9 +104,7 @@ def evaluateInput(encoder, decoder, searcher, voc, input_sentence):
         except KeyError:
             print("Error: Encountered unknown word.")
 
-
 searcher = GreedySearchDecoder(encoder, decoder)
 searcher.to(device)
 
-
-evaluateInput(encoder, decoder, searcher, voc, "Hello")
+evaluateInput(encoder, decoder, searcher, voc, args.text)
