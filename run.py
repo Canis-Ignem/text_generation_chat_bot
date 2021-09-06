@@ -7,6 +7,7 @@ import argparse
 
 args = argparse.ArgumentParser()
 args.add_argument('--text', metavar='t', type=str, default='', help='input text', required=True)
+args = vars(args.parse_args())
 
 # CONFIG
 model_name = 'cb_model'
@@ -107,4 +108,4 @@ def evaluateInput(encoder, decoder, searcher, voc, input_sentence):
 searcher = GreedySearchDecoder(encoder, decoder)
 searcher.to(device)
 
-evaluateInput(encoder, decoder, searcher, voc, args.text)
+evaluateInput(encoder, decoder, searcher, voc, args['text'])
